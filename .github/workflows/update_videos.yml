@@ -1,0 +1,31 @@
+name: Update Videos
+
+on:
+  schedule:
+    - cron: '0 3 */2 * *'
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Python Kur
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Kutuphaneleri Yukle
+        run: pip install requests
+
+      - name: Videolari Guncelle
+        run: python scripts/fetch_videos.py
+
+      - name: Commit Et
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add videos.json
+          git diff --staged --quiet || git commit -m "videos.json guncellendi"
+          git push
