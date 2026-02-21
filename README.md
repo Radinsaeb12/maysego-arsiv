@@ -1,1 +1,0 @@
-# maysego-arsiv
